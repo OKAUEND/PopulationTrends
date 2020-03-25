@@ -1,29 +1,5 @@
-# populationtrends
+=======
 
-## Project setup
-```
-yarn install
-```
+# PopulationTrends
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+都道府県別の総人口推移グラフを表示する
