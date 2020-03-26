@@ -49,9 +49,9 @@ export default {
   },
   watch: {
     async prefectures(newPrefectures) {
-      this.populations = await Promise.all(
+      const populations = await Promise.all(
         newPrefectures.map(async Prefecture => {
-          const population = await this.axios
+          const populationdetail = await this.axios
             .get(
               `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${Prefecture.prefCode}`,
               {
@@ -61,15 +61,21 @@ export default {
             .then(response => {
               return response.data.result.data[0];
             });
+
+          const population = populationdetail.data.map(population => {
+            return { x: Date.UTC(population.year, 0, 1), y: population.value };
+          });
           return {
-            population: population,
-            PrefName: Prefecture.prefName,
+            data: population,
+            name: Prefecture.prefName,
             PrefCode: Prefecture.prefCode
           };
         })
       ).then(responses => {
         return Promise.resolve(responses);
       });
+
+      this.chartOptions = { series: populations };
     }
   }
 };
