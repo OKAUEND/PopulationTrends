@@ -33,7 +33,6 @@ export default {
         headers: { "X-API-KEY": process.env.VUE_APP_apikey }
       })
       .then(prefectures => {
-        console.log(prefectures);
         return prefectures.data.result;
       })
       .catch(error => {
