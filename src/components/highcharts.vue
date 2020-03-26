@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "highcharts",
+  name: "populationschart",
   props: {
     prefectures: {
       type: Array,
