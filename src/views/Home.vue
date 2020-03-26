@@ -1,18 +1,25 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <prefecture-list @change="setPrefectures()" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import PrefectureList from "@/components/PrefectureList.vue";
 export default {
   name: "Home",
   components: {
-    HelloWorld
+    PrefectureList
+  },
+  data() {
+    return {
+      selectprefectures: []
+    };
+  },
+  methods: {
+    setPrefectures(array) {
+      this.selectprefectures = array;
+    }
   }
 };
 </script>
