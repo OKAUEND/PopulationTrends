@@ -1,24 +1,28 @@
 <template>
   <div class="home">
-    <prefecture-list @change="setPrefectures()" />
+    <prefecture-list @change="setPrefectures" />
+    <high-charts :prefectures="prefectures" />
   </div>
 </template>
 
 <script>
 import PrefectureList from "@/components/PrefectureList.vue";
+import HighCharts from "@/components/highcharts.vue";
 export default {
   name: "Home",
   components: {
-    PrefectureList
+    PrefectureList,
+    HighCharts
   },
   data() {
     return {
-      selectprefectures: []
+      prefectures: []
     };
   },
   methods: {
     setPrefectures(array) {
-      this.selectprefectures = array;
+      console.log(array);
+      this.prefectures = array;
     }
   }
 };
