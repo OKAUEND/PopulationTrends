@@ -1,5 +1,7 @@
 <template>
-  <article></article>
+  <article>
+    <highcharts :options="chartOptions"></highcharts>
+  </article>
 </template>
 
 <script>
@@ -13,7 +15,36 @@ export default {
   },
   data() {
     return {
-      populations: []
+      chartOptions: {
+        chart: {
+          type: "spline"
+        },
+        title: {
+          text: "人口推移"
+        },
+        yAxis: {
+          title: {
+            text: "人口数"
+          },
+          tickInterval: 500000
+        },
+        xAxis: {
+          title: {
+            text: "年度"
+          },
+          type: "datetime",
+          labels: {
+            format: `{value:%Y}`
+          },
+          tickInterval: Date.UTC(1970, 0, 1) - Date.UTC(1960, 0, 1)
+        },
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "top"
+        },
+        series: []
+      }
     };
   },
   watch: {
