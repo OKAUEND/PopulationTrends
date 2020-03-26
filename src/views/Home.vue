@@ -1,18 +1,29 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <prefecture-list @change="setPrefectures" />
+    <high-charts :prefectures="prefectures" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import PrefectureList from "@/components/PrefectureList.vue";
+import HighCharts from "@/components/highcharts.vue";
 export default {
   name: "Home",
   components: {
-    HelloWorld
+    PrefectureList,
+    HighCharts
+  },
+  data() {
+    return {
+      prefectures: []
+    };
+  },
+  methods: {
+    setPrefectures(array) {
+      console.log(array);
+      this.prefectures = array;
+    }
   }
 };
 </script>
