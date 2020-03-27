@@ -34,11 +34,8 @@ export default {
           title: {
             text: "年度"
           },
-          type: "datetime",
-          labels: {
-            format: `{value:%Y}`
-          },
-          tickInterval: Date.UTC(1970, 0, 1) - Date.UTC(1960, 0, 1)
+          categories: [],
+          min: 0.5
         },
         legend: {
           layout: "vertical",
