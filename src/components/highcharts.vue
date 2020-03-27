@@ -77,7 +77,7 @@ export default {
             });
 
           const population = populationdetail.data.map(population => {
-            return { x: Date.UTC(population.year, 0, 1), y: population.value };
+            return population.value;
           });
           return {
             data: population,
