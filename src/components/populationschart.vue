@@ -58,7 +58,7 @@ export default {
               }
             }
           ]
-        },
+        }
       }
     };
   },
@@ -113,7 +113,7 @@ export default {
 .populationschart {
   width: 100%;
   @media screen and (min-width: 761px) {
-    width: 80%;
+    width: 65%;
     margin: 0 auto;
   }
 }
