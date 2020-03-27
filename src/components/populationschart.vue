@@ -112,7 +112,7 @@ export default {
 <style scoped lang="scss">
 .populationschart {
   width: 100%;
-  @media screen and (min-width: 761px) {
+  @media screen and (min-width: 781px) {
     width: 65%;
     margin: 0 auto;
   }

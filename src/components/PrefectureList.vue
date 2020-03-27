@@ -1,6 +1,6 @@
 <template>
   <article class="Prefectures">
-    都道府県
+    <h2 class="Prefectures_Title">都道府県</h2>
     <div class="Prefectures__Container">
       <ul class="Prefectures__PrefectureList">
         <li
@@ -72,27 +72,33 @@ export default {
 
 <style scoped lang="scss">
 .Prefectures {
-  width: 330px;
-  margin: 0 auto;
-  margin-bottom: 10px;
-  @media screen and (min-width: 761px) {
-    width: 100%;
+  width: 100%;
+  margin-bottom: 30px;
+  @media screen and (min-width: 781px) {
+    width: calc(100% / 1.5);
+    margin: 0 auto;
+    margin-bottom: 30px;
   }
+
+  &__Title {
+    text-align: left;
+  }
+
   &__PrefectureList {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    @media screen and (min-width: 761px) {
-      width: calc(100% / 1.5);
-      margin: 0 auto;
-    }
+    text-align: center;
   }
 
   &__Prefecture {
     display: inline-block;
-    width: 110px;
+    width: calc(100% / 3);
     margin-top: 3px;
     margin-bottom: 3px;
+    @media screen and (min-width: 761px) {
+      width: 125px;
+    }
   }
 }
 </style>
