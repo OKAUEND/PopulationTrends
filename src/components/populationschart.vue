@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article class="populationschart">
     <highcharts :options="chartOptions"></highcharts>
   </article>
 </template>
@@ -42,7 +42,23 @@ export default {
           align: "right",
           verticalAlign: "top"
         },
-        series: []
+        series: [],
+        responsive: {
+          rules: [
+            {
+              condition: {
+                maxWidth: 500
+              },
+              chartOptions: {
+                legend: {
+                  align: "center",
+                  verticalAlign: "bottom",
+                  layout: "horizontal"
+                }
+              }
+            }
+          ]
+        },
       }
     };
   },
@@ -93,4 +109,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.populationschart {
+  width: 100%;
+  @media screen and (min-width: 761px) {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+</style>
