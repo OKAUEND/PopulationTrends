@@ -1,30 +1,41 @@
 <template>
-  <article class="PrefectureList">
-    <ul>
-      都道府県
-      <li v-for="(prefecture, prefCode) in prefectures" :key="prefCode">
-        <input
-          type="checkbox"
-          :value="prefecture"
-          :id="prefCode"
-          v-model="checkprefectures"
-          @change="checkemit"
-        />
-        <label :for="prefCode">
-          {{ prefecture.prefName }}
-        </label>
-      </li>
-    </ul>
+  <article class="Prefectures">
+    <h2 class="Prefectures_Title">都道府県</h2>
+    <div class="Prefectures__Container">
+      <ul class="Prefectures__PrefectureList">
+        <li
+          v-for="(prefecture, prefCode) in prefectures"
+          :key="prefCode"
+          class="Prefectures__Prefecture"
+        >
+          <base-checkbox
+            :object="prefecture"
+            :id="prefCode"
+            v-model="prefecturesevent"
+            >{{ prefecture.prefName }}</base-checkbox
+          >
+        </li>
+      </ul>
+    </div>
   </article>
 </template>
 
 <script>
+import BaseCheckbox from "@/components/Base/BaseCheckBox.vue";
 export default {
   name: "PrefectureList",
+  components: {
+    BaseCheckbox
+  },
+  props: {
+    value: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      prefectures: [],
-      checkprefectures: []
+      prefectures: []
     };
   },
   async mounted() {
@@ -41,6 +52,16 @@ export default {
         alert({ error });
       });
   },
+  computed: {
+    prefecturesevent: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        return this.$emit("input", value);
+      }
+    }
+  },
   methods: {
     checkemit() {
       return this.$emit("change", this.checkprefectures);
@@ -49,4 +70,35 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.Prefectures {
+  width: 100%;
+  margin-bottom: 30px;
+  @media screen and (min-width: 781px) {
+    width: calc(100% / 1.5);
+    margin: 0 auto;
+    margin-bottom: 30px;
+  }
+
+  &__Title {
+    text-align: left;
+  }
+
+  &__PrefectureList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  &__Prefecture {
+    display: inline-block;
+    width: calc(100% / 3);
+    margin-top: 3px;
+    margin-bottom: 3px;
+    @media screen and (min-width: 761px) {
+      width: 125px;
+    }
+  }
+}
+</style>
