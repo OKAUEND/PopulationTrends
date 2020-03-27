@@ -16,6 +16,9 @@ export default {
   data() {
     return {
       chartOptions: {
+        lang: {
+          noData: `都道府県を選択してください。`
+        },
         chart: {
           type: "spline"
         },
