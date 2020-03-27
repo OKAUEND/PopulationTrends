@@ -46,6 +46,21 @@ export default {
       }
     };
   },
+  async mounted() {
+    const years = await this.axios
+      .get(
+        "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=1",
+        {
+          headers: { "X-API-KEY": process.env.VUE_APP_apikey }
+        }
+      )
+      .then(response => {
+        return response.data.result.data[0].data.map(data => {
+          return data.year;
+        });
+      });
+    this.chartOptions.xAxis.categories = years;
+  },
   watch: {
     async prefectures(newPrefectures) {
       const populations = await Promise.all(
