@@ -75,7 +75,6 @@ export default {
             .then(response => {
               return response.data.result.data[0];
             });
-
           const population = populationdetail.data.map(population => {
             return population.value;
           });
@@ -88,7 +87,6 @@ export default {
       ).then(responses => {
         return Promise.resolve(responses);
       });
-
       this.chartOptions = { series: populations };
     }
   }

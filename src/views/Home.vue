@@ -1,18 +1,18 @@
 <template>
   <div class="home">
     <prefecture-list @change="setPrefectures" />
-    <high-charts :prefectures="prefectures" />
+    <populationschart :prefectures="prefectures" />
   </div>
 </template>
 
 <script>
 import PrefectureList from "@/components/PrefectureList.vue";
-import HighCharts from "@/components/highcharts.vue";
+import populationschart from "@/components/populationschart.vue";
 export default {
   name: "Home",
   components: {
     PrefectureList,
-    HighCharts
+    populationschart
   },
   data() {
     return {
