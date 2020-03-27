@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="Home">
     <prefecture-list @change="setPrefectures" />
     <populationschart :prefectures="prefectures" />
   </div>
@@ -27,3 +27,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.Home {
+  width: 100%;
+  @media screen and (min-width: 761px) {
+    width: 70%;
+    margin: 0 auto;
+  }
+}
+</style>
