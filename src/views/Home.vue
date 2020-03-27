@@ -1,6 +1,6 @@
 <template>
   <div class="Home">
-    <prefecture-list @change="setPrefectures" />
+    <prefecture-list v-model="setPrefectures" />
     <populationschart :prefectures="prefectures" />
   </div>
 </template>
@@ -19,10 +19,14 @@ export default {
       prefectures: []
     };
   },
-  methods: {
-    setPrefectures(array) {
-      console.log(array);
-      this.prefectures = array;
+  computed: {
+    setPrefectures: {
+      get() {
+        return this.prefectures;
+      },
+      set(value) {
+        this.prefectures = value;
+      }
     }
   }
 };

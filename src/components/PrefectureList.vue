@@ -8,17 +8,12 @@
           :key="prefCode"
           class="Prefectures__Prefecture"
         >
-          <input
-            type="checkbox"
-            :value="prefecture"
+          <base-checkbox
+            :object="prefecture"
             :id="prefCode"
-            v-model="checkprefectures"
-            @change="checkemit"
-            clsss="CustomCheckbox"
-          />
-          <label :for="prefCode" class="CustomLabel">
-            <span class="CustomLabel__text"> {{ prefecture.prefName }}</span>
-          </label>
+            v-model="prefecturesevent"
+            >{{ prefecture.prefName }}</base-checkbox
+          >
         </li>
       </ul>
     </div>
@@ -26,12 +21,21 @@
 </template>
 
 <script>
+import BaseCheckbox from "@/components/Base/BaseCheckBox.vue";
 export default {
   name: "PrefectureList",
+  components: {
+    BaseCheckbox
+  },
+  props: {
+    value: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      prefectures: [],
-      checkprefectures: []
+      prefectures: []
     };
   },
   async mounted() {
@@ -48,6 +52,16 @@ export default {
         alert({ error });
       });
   },
+  computed: {
+    prefecturesevent: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        return this.$emit("input", value);
+      }
+    }
+  },
   methods: {
     checkemit() {
       return this.$emit("change", this.checkprefectures);
@@ -62,73 +76,23 @@ export default {
   margin: 0 auto;
   margin-bottom: 10px;
   @media screen and (min-width: 761px) {
-    width: calc(100% / 1.5);
-  }
-  &__Container {
-    margin: 0 auto;
+    width: 100%;
   }
   &__PrefectureList {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    @media screen and (min-width: 761px) {
+      width: calc(100% / 1.5);
+      margin: 0 auto;
+    }
   }
 
   &__Prefecture {
+    display: inline-block;
     width: 110px;
     margin-top: 3px;
     margin-bottom: 3px;
-  }
-}
-
-.CustomCheckbox {
-  display: none;
-  position: absolute;
-}
-
-.CustomLabel {
-  outline: 0;
-  display: none;
-  display: block;
-
-  &:hover {
-    font-size: 17px;
-    font-weight: bold;
-  }
-
-  &:before {
-    content: "\2714";
-    border: 2px solid #000;
-    border-radius: 2px;
-    display: inline-block;
-    width: 18px;
-    height: 20px;
-    padding-left: 2px;
-    padding-bottom: 2px;
-    margin-right: 2px;
-    vertical-align: bottom;
-    color: transparent;
-    transition: 0.2s;
-  }
-
-  &:active:before {
-    transform: scale(0);
-  }
-
-  &__text {
-    display: inline-block;
-    width: 70px;
-  }
-}
-
-input[type="checkbox"]:checked {
-  & + .CustomLabel {
-    font-size: 17px;
-    font-weight: bold;
-  }
-  & + .CustomLabel:before {
-    background-color: MediumSeaGreen;
-    border-color: MediumSeaGreen;
-    color: #fff;
   }
 }
 </style>
