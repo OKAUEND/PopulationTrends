@@ -28,8 +28,7 @@ export default {
         yAxis: {
           title: {
             text: "人口数"
-          },
-          tickInterval: 500000
+          }
         },
         xAxis: {
           title: {
