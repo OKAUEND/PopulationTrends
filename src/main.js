@@ -8,6 +8,7 @@ import VueAxions from "vue-axios";
 import Highcharts from "highcharts";
 import HighchartsVue from "highcharts-vue";
 import HighchartsNoData from "highcharts-no-data-to-display";
+require("@/assets/scss/main.scss");
 
 Vue.config.productionTip = false;
 
