@@ -1,10 +1,11 @@
 <template>
   <article class="populationschart">
-    <highcharts :options="chartOptions"></highcharts>
+    <base-chart :xAxiscategory="years" :seriesdata="populations" />
   </article>
 </template>
 
 <script>
+import BaseChart from "@/components/Base/BaseChart.vue";
 export default {
   name: "populationschart",
   props: {
@@ -13,53 +14,13 @@ export default {
       required: true
     }
   },
+  components: {
+    BaseChart
+  },
   data() {
     return {
-      chartOptions: {
-        lang: {
-          noData: `都道府県を選択してください。`
-        },
-        chart: {
-          type: "spline"
-        },
-        title: {
-          text: "人口推移"
-        },
-        yAxis: {
-          title: {
-            text: "人口数"
-          }
-        },
-        xAxis: {
-          title: {
-            text: "年度"
-          },
-          categories: [],
-          min: 0.5
-        },
-        legend: {
-          layout: "vertical",
-          align: "right",
-          verticalAlign: "top"
-        },
-        series: [],
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500
-              },
-              chartOptions: {
-                legend: {
-                  align: "center",
-                  verticalAlign: "bottom",
-                  layout: "horizontal"
-                }
-              }
-            }
-          ]
-        }
-      }
+      years: [],
+      populations: []
     };
   },
   async mounted() {
@@ -75,7 +36,7 @@ export default {
           return data.year;
         });
       });
-    this.chartOptions.xAxis.categories = years;
+    this.years = years;
   },
   watch: {
     async prefectures(newPrefectures) {
@@ -103,7 +64,7 @@ export default {
       ).then(responses => {
         return Promise.resolve(responses);
       });
-      this.chartOptions = { ...this.chartOptions, series: populations };
+      this.populations = populations;
     }
   }
 };
