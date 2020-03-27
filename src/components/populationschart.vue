@@ -103,7 +103,7 @@ export default {
       ).then(responses => {
         return Promise.resolve(responses);
       });
-      this.chartOptions = { series: populations };
+      this.chartOptions = { ...this.chartOptions, series: populations };
     }
   }
 };
