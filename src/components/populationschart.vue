@@ -8,7 +8,7 @@
 import BaseChart from "@/components/Base/BaseChart.vue";
 import axios from "axios";
 export default {
-  name: "populationschart",
+  name: "PopulationsChart",
   props: {
     prefectures: {
       type: Array,
