@@ -6,6 +6,7 @@
 
 <script>
 import BaseChart from "@/components/Base/BaseChart.vue";
+import axios from "axios";
 export default {
   name: "populationschart",
   props: {
@@ -24,7 +25,7 @@ export default {
     };
   },
   async mounted() {
-    const years = await this.axios
+    const years = await axios
       .get(
         "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=1",
         {
@@ -35,6 +36,11 @@ export default {
         return response.data.result.data[0].data.map(data => {
           return data.year;
         });
+      })
+      .catch(error => {
+        //レスポンスエラーなら別画面へ遷移して500エラーにするかも
+        console.error({ error });
+        alert({ error });
       });
     this.years = years;
   },
@@ -42,7 +48,7 @@ export default {
     async prefectures(newPrefectures) {
       const populations = await Promise.all(
         newPrefectures.map(async Prefecture => {
-          const populationdetail = await this.axios
+          const populationdetail = await axios
             .get(
               `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${Prefecture.prefCode}`,
               {

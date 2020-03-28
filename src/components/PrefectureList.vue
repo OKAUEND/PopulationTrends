@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import BaseCheckbox from "@/components/Base/BaseCheckBox.vue";
+import BaseCheckbox from "@/components/Base/BaseCheckbox.vue";
+import axios from "axios";
 export default {
   name: "PrefectureList",
   components: {
@@ -39,7 +40,7 @@ export default {
     };
   },
   async mounted() {
-    this.prefectures = await this.axios
+    this.prefectures = await axios
       .get("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
         headers: { "X-API-KEY": process.env.VUE_APP_apikey }
       })
@@ -60,11 +61,6 @@ export default {
       set(value) {
         return this.$emit("input", value);
       }
-    }
-  },
-  methods: {
-    checkemit() {
-      return this.$emit("change", this.checkprefectures);
     }
   }
 };
