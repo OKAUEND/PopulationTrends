@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import prefecturelist from "@/components/prefectureList.vue";
-import populationschart from "@/components/populationschart.vue";
+import prefecturelist from "@/components/PrefectureList.vue";
+import populationschart from "@/components/PopulationsChart.vue";
 export default {
   name: "Topview",
   components: {
