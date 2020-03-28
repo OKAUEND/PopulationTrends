@@ -33,14 +33,26 @@ export default {
         }
       )
       .then(response => {
+        //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
+        //catchだと取れないためここでする
+        if (response.status > 500) {
+          this.setStoreState(response.status);
+          return;
+        } else if (
+          response.data.statusCode === "403" ||
+          response.data.statusCode === "404" ||
+          response.data.statusCode === "429"
+        ) {
+          this.setStoreState(response.data.statusCode);
+          return;
+        }
+
         return response.data.result.data[0].data.map(data => {
           return data.year;
         });
       })
       .catch(error => {
-        //レスポンスエラーなら別画面へ遷移して500エラーにするかも
         console.error({ error });
-        alert({ error });
       });
     this.years = years;
   },
@@ -56,11 +68,27 @@ export default {
               }
             )
             .then(response => {
+              //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
+              //catchだと取れないためここでする
+              if (response.status > 500) {
+                this.setStoreState(response.status);
+                return;
+              } else if (
+                response.data.statusCode === "403" ||
+                response.data.statusCode === "404" ||
+                response.data.statusCode === "429"
+              ) {
+                this.setStoreState(response.data.statusCode);
+                return;
+              }
+
               return response.data.result.data[0];
             });
+
           const population = populationdetail.data.map(population => {
             return population.value;
           });
+
           return {
             data: population,
             name: Prefecture.prefName,
@@ -71,6 +99,12 @@ export default {
         return Promise.resolve(responses);
       });
       this.populations = populations;
+    }
+  },
+  methods: {
+    setStoreState(status) {
+      this.$store.commit("setErrorState", status);
+      this.$router.push("/Error");
     }
   }
 };

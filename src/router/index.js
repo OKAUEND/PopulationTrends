@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Topview from "../views/Topview.vue";
+import ErrorPage from "@/components/ErrorPage.vue";
 
 Vue.use(VueRouter);
 
@@ -9,6 +10,11 @@ const routes = [
     path: "/",
     name: "Topview",
     component: Topview
+  },
+  {
+    path: "/Error",
+    name: "ErrorPage",
+    component: ErrorPage
   }
 ];
 
