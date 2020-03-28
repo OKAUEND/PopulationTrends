@@ -50,7 +50,6 @@ export default {
       .catch(error => {
         //レスポンスエラーなら別画面へ遷移して500エラーにするかも
         console.error({ error });
-        alert({ error });
       });
   },
   computed: {
