@@ -68,12 +68,20 @@ export default {
       get() {
         return this.value;
       },
+      /*
+        @param   {Object} value    - 個別の都道府県オブジェクト
+        @return  {emit}            - emitイベント
+      */
       set(value) {
         return this.$emit("input", value);
       }
     }
   },
+
   methods: {
+    /*
+      @param   {Number,String} status    - エラーステータス
+    */
     setStoreState(status) {
       this.$store.commit("setErrorState", status);
       this.$router.push("/Error");

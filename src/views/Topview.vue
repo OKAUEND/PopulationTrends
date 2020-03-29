@@ -22,9 +22,15 @@ export default {
   },
   computed: {
     Prefectures: {
+      /*
+        @return   {Array}          - 選ばれた都道府県オブジェクトの配列
+      */
       get() {
         return this.prefectures;
       },
+      /*
+        @param   {Object} value    - 個別の都道府県オブジェクト
+      */
       set(value) {
         this.prefectures = value;
       }
