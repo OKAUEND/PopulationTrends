@@ -86,8 +86,11 @@ export default {
 .Prefectures {
   width: 100%;
   margin-bottom: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-sizing: border-box;
   @media screen and (min-width: 781px) {
-    width: calc(100% / 1.5);
+    width: calc(100% / 1.3);
     margin: 0 auto;
     margin-bottom: 30px;
   }
