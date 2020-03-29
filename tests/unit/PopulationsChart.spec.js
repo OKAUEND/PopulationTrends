@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import populationschart from "@/components/PopulationsChart.vue";
 import flushPromises from "flush-promises";
+import message from "@/assets/message.json";
 
 jest.mock("axios");
 
@@ -36,5 +37,17 @@ describe("PrefectureList.vue", () => {
     await flushPromises();
     //propsが渡されているときは長さがその分ある
     expect(wrapper.vm.populations.length).toBe(1);
+  });
+
+  it("RESASとの通信時に、RESASからエラーレスポンスが帰ってきた時正しくエラーメッセージを表示できているか", async () => {
+    setPattern(2);
+    const wrapper = shallowMount(populationschart, {
+      propsData: {
+        prefectures: []
+      }
+    });
+    await flushPromises();
+    //Console.Errorが表示されるが、正常な動作
+    expect(wrapper.vm.errormessage).toEqual(message.Status403And404byChartpage);
   });
 });
