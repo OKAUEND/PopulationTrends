@@ -1,4 +1,5 @@
 <template>
+  <article class="PopulationsChart">
     <p class="PopulationsChart__Message">{{ errormessage }}</p>
     <base-chart :xAxiscategory="years" :seriesdata="populations" />
   </article>
@@ -110,11 +111,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.populationschart {
+.PopulationsChart {
   width: 100%;
   @media screen and (min-width: 781px) {
     width: 65%;
     margin: 0 auto;
+  }
+
+  &__Message {
+    color: #dc143c;
+    font-weight: 800;
+    font-size: 20px;
+    text-align: center;
+    word-break: keep-all;
   }
 }
 </style>
