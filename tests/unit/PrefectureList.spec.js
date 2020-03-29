@@ -1,5 +1,5 @@
 import { shallowMount, mount } from "@vue/test-utils";
-import PrefectureList from "@/components/prefectureList.vue";
+import PrefectureList from "@/components/PrefectureList.vue";
 import BaseCheckbox from "@/components/Base/BaseCheckbox.vue";
 import flushPromises from "flush-promises";
 

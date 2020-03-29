@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import populationschart from "@/components/populationschart.vue";
+import populationschart from "@/components/PopulationsChart.vue";
 import flushPromises from "flush-promises";
 
 jest.mock("axios");

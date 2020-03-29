@@ -44,13 +44,24 @@ export default {
       .get("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
         headers: { "X-API-KEY": process.env.VUE_APP_apikey }
       })
-      .then(prefectures => {
-        return prefectures.data.result;
+      .then(response => {
+        //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
+        if (response.status > 500) {
+          this.setStoreState(response.status);
+          return;
+        } else if (
+          response.data.statusCode === "403" ||
+          response.data.statusCode === "404" ||
+          response.data.statusCode === "429"
+        ) {
+          this.setStoreState(response.data.statusCode);
+          return;
+        }
+        return response.data.result;
       })
       .catch(error => {
         //レスポンスエラーなら別画面へ遷移して500エラーにするかも
         console.error({ error });
-        alert({ error });
       });
   },
   computed: {
@@ -61,6 +72,13 @@ export default {
       set(value) {
         return this.$emit("input", value);
       }
+    }
+  },
+  methods: {
+    setStoreState(status) {
+      console.error({ status });
+      this.$store.commit("setErrorState", status);
+      this.$router.push("/Error");
     }
   }
 };
