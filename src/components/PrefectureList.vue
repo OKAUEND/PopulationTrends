@@ -45,7 +45,6 @@ export default {
         headers: { "X-API-KEY": process.env.VUE_APP_apikey }
       })
       .then(response => {
-        console.log({ response });
         //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
         if (response.status > 500) {
           this.setStoreState(response.status);
