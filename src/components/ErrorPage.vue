@@ -1,7 +1,7 @@
 <template>
   <section class="ErrorPage">
     <h1>{{ ErrorStatus }}</h1>
-    <p>{{ ErrorMessage }}</p>
+    <p class="ErrorPage__Message">{{ ErrorMessage }}</p>
   </section>
 </template>
 
@@ -26,5 +26,9 @@ export default {
   align-items: center;
   flex-direction: column;
   height: 100%;
+
+  &__Message {
+    word-break: keep-all;
+  }
 }
 </style>
