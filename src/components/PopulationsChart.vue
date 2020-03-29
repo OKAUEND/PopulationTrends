@@ -71,6 +71,11 @@ export default {
     }
   },
   methods: {
+    /*
+        @param   {Number}    prefCode      - 都道府県番号
+        @param   {err}       err           - Errorクラス
+        @return  {Array}                   - 都道府県年代別人口推移の配列
+    */
     async fetchPopulation(prefCode, err) {
       return await axios
         .get(
@@ -80,7 +85,10 @@ export default {
           }
         )
         .then(response => {
-          //非同期処理で場合は
+          /*
+            チャートコンポーネントの場合には、画面遷移せずに画面内にエラーを表示するようし、
+            グラフの取得に失敗したことをわかりやすいようにする
+          */
           if (response.status > 500) {
             this.errormessage = message.Status5xx;
             err.message = message.Status5xx;
@@ -101,7 +109,10 @@ export default {
           return response.data.result.data[0];
         });
     },
-  methods: {
+
+    /*
+      @param   {Number,String} status    - エラーステータス
+    */
     setStoreState(status) {
       this.$store.commit("setErrorState", status);
       this.$router.push("/Error");
