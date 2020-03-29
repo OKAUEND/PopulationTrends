@@ -1,5 +1,5 @@
 <template>
-  <article class="populationschart">
+    <p class="PopulationsChart__Message">{{ errormessage }}</p>
     <base-chart :xAxiscategory="years" :seriesdata="populations" />
   </article>
 </template>
@@ -7,6 +7,7 @@
 <script>
 import BaseChart from "@/components/Base/BaseChart.vue";
 import axios from "axios";
+import message from "@/assets/message.json";
 export default {
   name: "PopulationsChart",
   props: {
@@ -21,86 +22,84 @@ export default {
   data() {
     return {
       years: [],
-      populations: []
+      populations: [],
+      errormessage: ""
     };
   },
   async mounted() {
-    const years = await axios
-      .get(
-        "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=1",
-        {
-          headers: { "X-API-KEY": process.env.VUE_APP_apikey }
-        }
-      )
-      .then(response => {
-        //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
-        //catchだと取れないためここでする
-        if (response.status > 500) {
-          this.setStoreState(response.status);
-          return;
-        } else if (
-          response.data.statusCode === "403" ||
-          response.data.statusCode === "404" ||
-          response.data.statusCode === "429"
-        ) {
-          this.setStoreState(response.data.statusCode);
-          return;
-        }
+    //処理の開始地点でエラークラスのインスタントを作成し、スタックする
+    const err = new Error();
+    const result = await this.fetchPopulation("1", err).catch(error => {
+      console.error(error);
+    });
 
-        return response.data.result.data[0].data.map(data => {
-          return data.year;
-        });
-      })
-      .catch(error => {
-        console.error({ error });
-      });
-    this.years = years;
+    //エラーで処理が中断されたとき、resultには何も入ってないのでここでガードする
+    if (!result) {
+      return;
+    }
+
+    this.years = result.data.map(data => {
+      return data.year;
+    });
   },
   watch: {
     async prefectures(newPrefectures) {
-      const populations = await Promise.all(
-        newPrefectures.map(async Prefecture => {
-          const populationdetail = await axios
-            .get(
-              `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${Prefecture.prefCode}`,
-              {
-                headers: { "X-API-KEY": process.env.VUE_APP_apikey }
-              }
-            )
-            .then(response => {
-              //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
-              //catchだと取れないためここでする
-              if (response.status > 500) {
-                this.setStoreState(response.status);
-                return;
-              } else if (
-                response.data.statusCode === "403" ||
-                response.data.statusCode === "404" ||
-                response.data.statusCode === "429"
-              ) {
-                this.setStoreState(response.data.statusCode);
-                return;
-              }
-
-              return response.data.result.data[0];
+      //処理の開始地点でエラークラスのインスタントを作成し、スタックする
+      const err = new Error();
+      this.populations = await Promise.all(
+        newPrefectures.map(Prefecture => {
+          return this.fetchPopulation(Prefecture.prefCode, err).then(result => {
+            const population = result.data.map(population => {
+              return population.value;
             });
-
-          const population = populationdetail.data.map(population => {
-            return population.value;
+            return Promise.resolve({
+              data: population,
+              name: Prefecture.prefName,
+              PrefCode: Prefecture.prefCode
+            });
           });
-
-          return {
-            data: population,
-            name: Prefecture.prefName,
-            PrefCode: Prefecture.prefCode
-          };
         })
-      ).then(responses => {
-        return Promise.resolve(responses);
-      });
-      this.populations = populations;
+      )
+        .then(responses => {
+          return Promise.resolve(responses);
+        })
+        .catch(error => {
+          console.error({ error });
+          return;
+        });
     }
   },
+  methods: {
+    async fetchPopulation(prefCode, err) {
+      return await axios
+        .get(
+          `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}`,
+          {
+            headers: { "X-API-KEY": process.env.VUE_APP_apikey }
+          }
+        )
+        .then(response => {
+          //非同期処理で場合は
+          if (response.status > 500) {
+            this.errormessage = message.Status5xx;
+            err.message = message.Status5xx;
+            throw err;
+          } else if (
+            response.data.statusCode === "403" ||
+            response.data.statusCode === "404"
+          ) {
+            this.errormessage = message.Status403And404byChartpage;
+            err.message = message.Status403And404byChartpage;
+            throw err;
+          } else if (response.data.statusCode === "429") {
+            this.errormessage = message.Status429;
+            err.message = message.Status429;
+            throw err;
+          }
+
+          return response.data.result.data[0];
+        });
+    },
   methods: {
     setStoreState(status) {
       this.$store.commit("setErrorState", status);
