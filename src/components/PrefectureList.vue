@@ -60,7 +60,6 @@ export default {
         return response.data.result;
       })
       .catch(error => {
-        //レスポンスエラーなら別画面へ遷移して500エラーにするかも
         console.error({ error });
       });
   },
