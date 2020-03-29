@@ -31,7 +31,7 @@ export default {
     //処理の開始地点でエラークラスのインスタントを作成し、スタックする
     const err = new Error();
     const result = await this.fetchPopulation("1", err).catch(error => {
-      console.error(error);
+      window.console.error(error);
     });
 
     //エラーで処理が中断されたとき、resultには何も入ってないのでここでガードする
@@ -65,7 +65,7 @@ export default {
           return Promise.resolve(responses);
         })
         .catch(error => {
-          console.error({ error });
+          window.console.error({ error });
           return;
         });
     }

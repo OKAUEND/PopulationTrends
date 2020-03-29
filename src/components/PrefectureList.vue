@@ -60,7 +60,7 @@ export default {
         return response.data.result;
       })
       .catch(error => {
-        console.error({ error });
+        window.console.error({ error });
       });
   },
   computed: {
@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     setStoreState(status) {
-      console.error({ status });
       this.$store.commit("setErrorState", status);
       this.$router.push("/Error");
     }
