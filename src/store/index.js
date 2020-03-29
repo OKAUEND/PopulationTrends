@@ -33,7 +33,6 @@ export default new Vuex.Store({
       }
     },
     getErrorMessage: state => {
-      console.log(state);
       switch (state.ErrorStatus) {
         case 403 || 404:
           return message.Status403And404;
