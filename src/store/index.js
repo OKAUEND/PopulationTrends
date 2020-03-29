@@ -9,16 +9,28 @@ export default new Vuex.Store({
     ErrorStatus: 403
   },
   mutations: {
+    /*
+      @param   {Object} state    - VuexのState
+      @param   {Number,String} value    - エラーレスポンス番号
+    */
     setErrorState(state, value) {
       state.ErrorStatus = Number(value);
     }
   },
   actions: {
+    /*
+      @param   {commit} commit          - commitイベント
+      @param   {Number,String} event    - エラーレスポンス番号
+    */
     setErrorState({ commit }, event) {
       commit("setErrorState", event);
     }
   },
   getters: {
+    /*
+      @param   {Object} state      - VuexのState
+      @return  {String}            - エラーのタイトル名
+    */
     getErrorStatus: state => {
       switch (state.ErrorStatus) {
         case 403:
@@ -32,6 +44,10 @@ export default new Vuex.Store({
           return `5xx Server Error`;
       }
     },
+    /*
+      @param   {Object} state      - VuexのState
+      @return  {String}            - エラーメッセージ
+    */
     getErrorMessage: state => {
       switch (state.ErrorStatus) {
         case 403 || 404:

@@ -44,6 +44,9 @@ export default {
     });
   },
   watch: {
+    /*
+      @param   {Array} newPrefectures    - 選ばれた都道府県オブジェクトの配列
+    */
     async prefectures(newPrefectures) {
       //処理の開始地点でエラークラスのインスタントを作成し、スタックする
       const err = new Error();
