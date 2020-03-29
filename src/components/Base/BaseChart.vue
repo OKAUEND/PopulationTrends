@@ -22,7 +22,7 @@ export default {
           noData: `都道府県を選択してください。`
         },
         chart: {
-          type: "spline"
+          type: "line"
         },
         title: {
           text: "人口推移"
