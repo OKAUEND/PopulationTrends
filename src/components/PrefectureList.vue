@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import BaseCheckbox from "@/components/Base/BaseCheckBox.vue";
+import BaseCheckbox from "@/components/Base/BaseCheckbox.vue";
+import axios from "axios";
 export default {
   name: "PrefectureList",
   components: {
@@ -39,17 +40,27 @@ export default {
     };
   },
   async mounted() {
-    this.prefectures = await this.axios
+    this.prefectures = await axios
       .get("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
         headers: { "X-API-KEY": process.env.VUE_APP_apikey }
       })
-      .then(prefectures => {
-        return prefectures.data.result;
+      .then(response => {
+        //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
+        if (response.status > 500) {
+          this.setStoreState(response.status);
+          return;
+        } else if (
+          response.data.statusCode === "403" ||
+          response.data.statusCode === "404" ||
+          response.data.statusCode === "429"
+        ) {
+          this.setStoreState(response.data.statusCode);
+          return;
+        }
+        return response.data.result;
       })
       .catch(error => {
-        //レスポンスエラーなら別画面へ遷移して500エラーにするかも
-        console.error({ error });
-        alert({ error });
+        window.console.error({ error });
       });
   },
   computed: {
@@ -57,14 +68,23 @@ export default {
       get() {
         return this.value;
       },
+      /*
+        @param   {Object} value    - 個別の都道府県オブジェクト
+        @return  {emit}            - emitイベント
+      */
       set(value) {
         return this.$emit("input", value);
       }
     }
   },
+
   methods: {
-    checkemit() {
-      return this.$emit("change", this.checkprefectures);
+    /*
+      @param   {Number,String} status    - エラーステータス
+    */
+    setStoreState(status) {
+      this.$store.commit("setErrorState", status);
+      this.$router.push("/Error");
     }
   }
 };
@@ -74,8 +94,11 @@ export default {
 .Prefectures {
   width: 100%;
   margin-bottom: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-sizing: border-box;
   @media screen and (min-width: 781px) {
-    width: calc(100% / 1.5);
+    width: calc(100% / 1.3);
     margin: 0 auto;
     margin-bottom: 30px;
   }
