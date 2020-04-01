@@ -1,6 +1,5 @@
 <template>
   <section class="Topview">
-    <h1 class="Topview__Title">都道府県別人口推移</h1>
     <prefecturelist v-model="Prefectures" />
     <populationschart :prefectures="Prefectures" />
   </section>
@@ -45,12 +44,6 @@ export default {
   @media screen and (min-width: 761px) {
     width: 70%;
     margin: 0 auto;
-  }
-
-  &__Title {
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
   }
 }
 </style>
