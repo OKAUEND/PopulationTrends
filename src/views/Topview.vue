@@ -1,8 +1,8 @@
 <template>
   <section class="Topview">
     <h1 class="Topview__Title">都道府県別人口推移</h1>
-    <prefecturelist v-model="setPrefectures" />
-    <populationschart :prefectures="prefectures" />
+    <prefecturelist v-model="Prefectures" />
+    <populationschart :prefectures="Prefectures" />
   </section>
 </template>
 
@@ -21,10 +21,16 @@ export default {
     };
   },
   computed: {
-    setPrefectures: {
+    Prefectures: {
+      /*
+        @return   {Array}          - 選ばれた都道府県オブジェクトの配列
+      */
       get() {
         return this.prefectures;
       },
+      /*
+        @param   {Object} value    - 個別の都道府県オブジェクト
+      */
       set(value) {
         this.prefectures = value;
       }

@@ -14,7 +14,7 @@ export default {
       case 2:
         return Promise.resolve({
           data: {
-            result: { data: [{ data: [{ year: 1960, value: 20 }] }] }
+            statusCode: "403"
           }
         });
     }

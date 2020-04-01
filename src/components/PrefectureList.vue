@@ -45,7 +45,6 @@ export default {
         headers: { "X-API-KEY": process.env.VUE_APP_apikey }
       })
       .then(response => {
-        console.log({ response });
         //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
         if (response.status > 500) {
           this.setStoreState(response.status);
@@ -61,8 +60,7 @@ export default {
         return response.data.result;
       })
       .catch(error => {
-        //レスポンスエラーなら別画面へ遷移して500エラーにするかも
-        console.error({ error });
+        window.console.error({ error });
       });
   },
   computed: {
@@ -70,14 +68,21 @@ export default {
       get() {
         return this.value;
       },
+      /*
+        @param   {Object} value    - 個別の都道府県オブジェクト
+        @return  {emit}            - emitイベント
+      */
       set(value) {
         return this.$emit("input", value);
       }
     }
   },
+
   methods: {
+    /*
+      @param   {Number,String} status    - エラーステータス
+    */
     setStoreState(status) {
-      console.error({ status });
       this.$store.commit("setErrorState", status);
       this.$router.push("/Error");
     }
@@ -89,8 +94,11 @@ export default {
 .Prefectures {
   width: 100%;
   margin-bottom: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-sizing: border-box;
   @media screen and (min-width: 781px) {
-    width: calc(100% / 1.5);
+    width: calc(100% / 1.3);
     margin: 0 auto;
     margin-bottom: 30px;
   }

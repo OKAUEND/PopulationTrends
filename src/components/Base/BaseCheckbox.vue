@@ -32,9 +32,15 @@ export default {
   },
   computed: {
     checkeditem: {
+      /*
+        @return   {Object}    - 個別の都道府県オブジェクト
+      */
       get() {
         return this.value;
       },
+      /*
+        @param   {Object} value    - 個別の都道府県オブジェクト
+      */
       set(value) {
         return this.$emit("input", value);
       }
