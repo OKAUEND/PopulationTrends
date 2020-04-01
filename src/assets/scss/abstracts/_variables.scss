@@ -1,0 +1,6 @@
+//画面サイズ(メディアクエリ)
+$breakpoint_tab_lower_limit: 781px;
+$breakpoint_pc_lower_limit: 1024px;
+
+//1024px以上での要素幅のサイズ
+$container_pc_width: calc(120px * 6);

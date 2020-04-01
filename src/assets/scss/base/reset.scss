@@ -34,6 +34,16 @@ h6 {
 a {
   -webkit-tap-highlight-color: #00000000;
   tap-highlight-color: #00000000;
+  text-decoration: none;
+  list-style-type: none;
+
+  &:link {
+    color: #2c3e50;
+  }
+
+  &:visited {
+    color: #2c3e50;
+  }
 }
 
 li {
