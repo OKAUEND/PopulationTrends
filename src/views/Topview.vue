@@ -42,8 +42,8 @@ export default {
 <style lang="scss" scoped>
 .Topview {
   width: 100%;
-  @media screen and (min-width: 761px) {
-    width: 70%;
+  @media screen and (min-width: $breakpoint_pc_lower_limit) {
+    width: 75%;
     margin: 0 auto;
   }
 

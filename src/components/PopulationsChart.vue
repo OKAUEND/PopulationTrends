@@ -127,8 +127,8 @@ export default {
 <style scoped lang="scss">
 .PopulationsChart {
   width: 100%;
-  @media screen and (min-width: 781px) {
-    width: 65%;
+  @media screen and (min-width: $breakpoint_pc_lower_limit) {
+    width: $container_pc_width;
     margin: 0 auto;
   }
 

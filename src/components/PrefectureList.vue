@@ -1,7 +1,7 @@
 <template>
   <article class="Prefectures">
-    <h2 class="Prefectures_Title">都道府県</h2>
     <div class="Prefectures__Container">
+      <h2 class="Prefectures_Title">都道府県</h2>
       <ul class="Prefectures__PrefectureList">
         <li
           v-for="(prefecture, prefCode) in prefectures"
@@ -98,9 +98,12 @@ export default {
   padding-right: 5px;
   box-sizing: border-box;
   @media screen and (min-width: 781px) {
-    width: calc(100% / 1.3);
-    margin: 0 auto;
     margin-bottom: 30px;
+  }
+
+  &__Container {
+    max-width: $container_pc_width;
+    margin: 0 auto;
   }
 
   &__Title {
@@ -120,7 +123,7 @@ export default {
     margin-top: 3px;
     margin-bottom: 3px;
     @media screen and (min-width: 761px) {
-      width: 125px;
+      width: 120px;
     }
   }
 }
