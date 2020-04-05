@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    ErrorStatus: 403
+    ErrorStatus: 403,
+    Populations: []
   },
   mutations: {
     /*
@@ -15,6 +16,13 @@ export default new Vuex.Store({
     */
     setErrorState(state, value) {
       state.ErrorStatus = Number(value);
+    },
+    /*
+      @param   {Object} state    - VuexのState
+      @param   {Array}  value    - RESASより取得した都道府県別人口推移の配列
+    */
+    setPopulations(state, value) {
+      state.Populations = value;
     }
   },
   actions: {
@@ -24,6 +32,13 @@ export default new Vuex.Store({
     */
     setErrorState({ commit }, event) {
       commit("setErrorState", event);
+    },
+    /*
+      @param   {commit} commit          - commitイベント
+      @param   {Array}  value    - RESASより取得した都道府県別人口推移の配列
+    */
+    setPopulations({ commit }, event) {
+      commit("setPopulations", event);
     }
   },
   getters: {
@@ -58,6 +73,22 @@ export default new Vuex.Store({
           //5xxエラーはコレを表示する
           return message.Status5xx;
       }
+    },
+    /*
+      @param   {Object} state      - VuexのState
+      @return  {Array}             - キャッシュ中の人口推移配列の都道府県番号配列
+    */
+    getPopulationsPrefCode: state => {
+      return state.Populations.map(Population => {
+        return Population.PrefCode;
+      });
+    },
+    /*
+    @param   {Object} state      - VuexのState
+    @return  {Array}             - キャッシュ中の人口推移配列
+  */
+    getPopulations: state => {
+      return state.Populations;
     }
   }
 });
