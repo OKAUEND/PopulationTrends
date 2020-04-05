@@ -48,10 +48,18 @@ export default {
       @param   {Array} newPrefectures    - 選ばれた都道府県オブジェクトの配列
     */
     async prefectures(newPrefectures) {
+      //storeにキャッシュ中の都道府県を、選択した配列から省く
+      const storePrefCodes = this.$store.getters.getPopulationsPrefCode;
+      const usePrefCodes = newPrefectures.filter(Prefecture => {
+        return !storePrefCodes.includes(Prefecture.prefCode);
+      });
+
       //処理の開始地点でエラークラスのインスタントを作成し、スタックする
       const err = new Error();
-      this.populations = await Promise.all(
-        newPrefectures.map(Prefecture => {
+
+      //RESAS APIより人口推移を取得
+      const Populations = await Promise.all(
+        usePrefCodes.map(Prefecture => {
           return this.fetchPopulation(Prefecture.prefCode, err).then(result => {
             const population = result.data.map(population => {
               return population.value;
@@ -71,6 +79,21 @@ export default {
           window.console.error({ error });
           return;
         });
+
+      //キャッシュしているデータと結合する
+      const concatPopulations = Populations.concat(
+        this.$store.getters.getPopulations
+      );
+
+      //結合した配列を再キャッシュする
+      this.$store.commit("setPopulations", concatPopulations);
+
+      //選択した都道府県のみを表示するため、結合した配列から絞り込みを行う
+      this.populations = concatPopulations.filter(Population => {
+        return newPrefectures.some(
+          Prefecture => Prefecture.prefCode === Population.PrefCode
+        );
+      });
     }
   },
   methods: {
