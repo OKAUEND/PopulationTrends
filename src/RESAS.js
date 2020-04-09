@@ -12,13 +12,11 @@ export default class {
   }
 
   async fetchPopulations() {
-    console.log(this.Prefectures);
     const result = await Promise.all(
       this.Prefectures.map(Prefecture => {
         return this._sendAsyncRESAS(
           `${this.RESAS_POP_API_PATH}${Prefecture.prefCode}`
         ).then(result => {
-          console.log(result);
           const population = result.data.result.data[0].data.map(population => {
             return population.value;
           });
@@ -72,7 +70,6 @@ export default class {
     }
 
     return result.data.result.data[0].data.map(data => {
-      console.log(data.year);
       return data.year;
     });
   }
