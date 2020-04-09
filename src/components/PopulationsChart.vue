@@ -7,8 +7,7 @@
 
 <script>
 import BaseChart from "@/components/Base/BaseChart.vue";
-import axios from "axios";
-import message from "@/assets/message.json";
+import RESAS from "@/RESAS.js";
 export default {
   name: "PopulationsChart",
   props: {
@@ -28,20 +27,16 @@ export default {
     };
   },
   async mounted() {
-    //処理の開始地点でエラークラスのインスタントを作成し、スタックする
-    const err = new Error();
-    const result = await this.fetchPopulation("1", err).catch(error => {
-      window.console.error(error);
-    });
+    const api = new RESAS();
+
+    const result = await api.fetchYears();
 
     //エラーで処理が中断されたとき、resultには何も入ってないのでここでガードする
-    if (!result) {
-      return;
+    if (result.isError) {
+      this.setStoreState(result.Status);
     }
 
-    this.years = result.data.map(data => {
-      return data.year;
-    });
+    this.years = result;
   },
   watch: {
     /*
@@ -54,31 +49,10 @@ export default {
         return !storePrefCodes.includes(Prefecture.prefCode);
       });
 
-      //処理の開始地点でエラークラスのインスタントを作成し、スタックする
-      const err = new Error();
+      const api = new RESAS(usePrefCodes);
 
       //RESAS APIより人口推移を取得
-      const Populations = await Promise.all(
-        usePrefCodes.map(Prefecture => {
-          return this.fetchPopulation(Prefecture.prefCode, err).then(result => {
-            const population = result.data.map(population => {
-              return population.value;
-            });
-            return Promise.resolve({
-              data: population,
-              name: Prefecture.prefName,
-              PrefCode: Prefecture.prefCode
-            });
-          });
-        })
-      )
-        .then(responses => {
-          return Promise.resolve(responses);
-        })
-        .catch(error => {
-          window.console.error({ error });
-          return;
-        });
+      const Populations = await api.fetchPopulations();
 
       //キャッシュしているデータと結合する
       const concatPopulations = Populations.concat(
@@ -97,45 +71,6 @@ export default {
     }
   },
   methods: {
-    /*
-        @param   {Number}    prefCode      - 都道府県番号
-        @param   {err}       err           - Errorクラス
-        @return  {Array}                   - 都道府県年代別人口推移の配列
-    */
-    async fetchPopulation(prefCode, err) {
-      return await axios
-        .get(
-          `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${prefCode}`,
-          {
-            headers: { "X-API-KEY": process.env.VUE_APP_apikey }
-          }
-        )
-        .then(response => {
-          /*
-            チャートコンポーネントの場合には、画面遷移せずに画面内にエラーを表示するようし、
-            グラフの取得に失敗したことをわかりやすいようにする
-          */
-          if (response.status > 500) {
-            this.errormessage = message.Status5xx;
-            err.message = message.Status5xx;
-            throw err;
-          } else if (
-            response.data.statusCode === "403" ||
-            response.data.statusCode === "404"
-          ) {
-            this.errormessage = message.Status403And404byChartpage;
-            err.message = message.Status403And404byChartpage;
-            throw err;
-          } else if (response.data.statusCode === "429") {
-            this.errormessage = message.Status429;
-            err.message = message.Status429;
-            throw err;
-          }
-
-          return response.data.result.data[0];
-        });
-    },
-
     /*
       @param   {Number,String} status    - エラーステータス
     */

@@ -22,7 +22,8 @@
 
 <script>
 import BaseCheckbox from "@/components/Base/BaseCheckbox.vue";
-import axios from "axios";
+import RESAS from "@/RESAS.js";
+const api = new RESAS();
 export default {
   name: "PrefectureList",
   components: {
@@ -40,28 +41,13 @@ export default {
     };
   },
   async mounted() {
-    this.prefectures = await axios
-      .get("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
-        headers: { "X-API-KEY": process.env.VUE_APP_apikey }
-      })
-      .then(response => {
-        //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
-        if (response.status > 500) {
-          this.setStoreState(response.status);
-          return;
-        } else if (
-          response.data.statusCode === "403" ||
-          response.data.statusCode === "404" ||
-          response.data.statusCode === "429"
-        ) {
-          this.setStoreState(response.data.statusCode);
-          return;
-        }
-        return response.data.result;
-      })
-      .catch(error => {
-        window.console.error({ error });
-      });
+    const result = await api.fetchPrefectures();
+
+    if (result.isError) {
+      this.setStoreState(result.Status);
+    }
+
+    this.prefectures = result.prefectures;
   },
   computed: {
     prefecturesevent: {
