@@ -1,4 +1,5 @@
 import axios from "axios";
+import ErrorMessage from "@/assets/message.json";
 export default class {
   constructor(values = []) {
     this.RESAS_URL = "https://opendata.resas-portal.go.jp/api/v1/";
@@ -84,16 +85,23 @@ export default class {
       .then(response => {
         //エラーステータスチェックを行い、エラー画面へ遷移するかをチェックする
         if (response.status > 500) {
-          return this._changeErrorStatus(response.status);
+          this._changeErrorStatus(response.status, ErrorMessage.Status5xx);
+          return;
         } else if (
           response.data.statusCode === "403" ||
-          response.data.statusCode === "404" ||
-          response.data.statusCode === "429"
+          response.data.statusCode === "404"
         ) {
-          return this._changeErrorStatus(
+          this._changeErrorStatus(
             response.data.statusCode,
-            response.data.message
+            ErrorMessage.Status403And404byChartpage
           );
+          return;
+        } else if (response.data.statusCode === "429") {
+          this._changeErrorStatus(
+            response.data.statusCode,
+            ErrorMessage.Status429
+          );
+          return;
         }
         return { ...response, isError: false };
       })
